@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 // Base URL backend
-const API_BASE_URL = "https://web-production-bbb6.up.railway.app/api/reports";
+const API_BASE_URL = "http://web-production-bbb6.up.railway.app/api/reports";
 
 // Thunk untuk mengambil semua laporan
 export const fetchReports = createAsyncThunk(
