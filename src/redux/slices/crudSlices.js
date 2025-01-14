@@ -29,7 +29,7 @@ export const fetchReportsByUser = createAsyncThunk(
       });
 
       console.log("API Response:", response.data);
-      return response.data;
+      return response.data.reports || response.data;
     } catch (err) {
       console.error("API Error:", err.response?.data || err.message);
       return rejectWithValue(
@@ -42,7 +42,7 @@ export const fetchReportsByUser = createAsyncThunk(
 // Thunk untuk menambahkan laporan baru
 export const addReport = createAsyncThunk(
   "reports/addReport",
-  async ({formData, token }, { rejectWithValue }) => {
+  async ({ formData, token }, { rejectWithValue }) => {
     try {
       const response = await axios.post(API_BASE_URL, formData, {
         headers: {
@@ -83,8 +83,8 @@ export const updateReport = createAsyncThunk(
 export const deleteReport = createAsyncThunk(
   "reports/deleteReport",
   async ({ reportId, token }, { rejectWithValue }) => {
-    console.log("ID received in deleteReport thunk:", reportId); 
-    console.log("Token received in deleteReport thunk:", token); 
+    console.log("ID received in deleteReport thunk:", reportId);
+    console.log("Token received in deleteReport thunk:", token);
 
     try {
       if (!token) {

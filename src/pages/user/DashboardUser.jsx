@@ -1,4 +1,4 @@
-import { useEffect,useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchReportsByUser } from "../../redux/slices/crudSlices";
 import { useAuth } from "../../auth/AuthContext";
@@ -25,14 +25,28 @@ const DashboardUser = () => {
       <div className="flex flex-col w-full p-4 bg-slate-200">
         <div className="flex items-center justify-between mb-4">
           <h1 className="text-base font-bold lg:text-2xl">Dashboard User</h1>
-          <button className="px-4 py-2 bg-blue-400 rounded-lg" onClick={() => setIsModalOpen(true)}>
-            <span className="mr-2 text-base font-bold text-white lg:text-xl" >+</span>Tambah
-            Laporan
+          <button
+            className="px-4 py-2 bg-blue-400 rounded-lg"
+            onClick={() => setIsModalOpen(true)}
+          >
+            <span className="mr-2 text-base font-bold text-white lg:text-xl">
+              +
+            </span>
+            Tambah Laporan
           </button>
         </div>
-        <StatReport reports={reports} />
+
+        {reports.length === 0 ? (
+          <div className="py-8 text-center">
+            <p className="mb-4 text-gray-600">
+              Anda belum memiliki laporan. Mulai tambahkan laporan pertama Anda!
+            </p>
+          </div>
+        ) : (
+          <StatReport reports={reports} />
+        )}
       </div>
-      <AddReportModal 
+      <AddReportModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
       />
