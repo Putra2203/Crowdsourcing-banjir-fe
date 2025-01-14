@@ -6,16 +6,18 @@ import image from "../assets/889_v2f2zxmtmdi.png";
 const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [phone, setphone] = useState("");
   const [name, setName] = useState("");
   const navigate = useNavigate();
 
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("https://web-production-bbb6.up.railway.app/api/users/register", {
+      await axios.post("https://web-production-6d7c3.up.railway.app/api/users/register", {
         email,
         password,
         name,
+        phone
       });
       navigate("/login");
     } catch (err) {
@@ -44,6 +46,13 @@ const Register = () => {
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            className="w-full p-2 mb-4 border rounded"
+          />
+          <input
+            type="text"
+            placeholder="Number Phone"
+            value={phone}
+            onChange={(e) => setphone(e.target.value)}
             className="w-full p-2 mb-4 border rounded"
           />
           <input

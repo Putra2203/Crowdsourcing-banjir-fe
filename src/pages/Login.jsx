@@ -14,7 +14,7 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "https://web-production-bbb6.up.railway.app/api/users/login",
+        "https://web-production-6d7c3.up.railway.app/api/users/login",
         { email, password }
       );
       const { token, user } = response.data;
