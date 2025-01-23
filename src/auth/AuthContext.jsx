@@ -6,48 +6,42 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(null);
   const [userId, setUserId] = useState(null);
+  const [userName, setUserName] = useState(null);
 
-  const login = (token, id) => {
+  const login = (token, id, username) => {
     setToken(token);
     setUserId(id);
+    setUserName(username);
 
-    // Simpan ke localStorage
     localStorage.setItem("token", token);
     localStorage.setItem("userId", id);
-
-    console.log("Login berhasil: Token dan userId disimpan di localStorage");
+    localStorage.setItem("username", username);
   };
 
   const logout = () => {
     setToken(null);
     setUserId(null);
+    setUserName(null);
 
-    // Hapus dari localStorage
     localStorage.removeItem("token");
     localStorage.removeItem("userId");
-
-    console.log("Logout berhasil: Token dan userId dihapus dari localStorage");
+    localStorage.removeItem("username");
   };
 
   useEffect(() => {
     const savedToken = localStorage.getItem("token");
     const savedUserId = localStorage.getItem("userId");
+    const savedUserName = localStorage.getItem("username");
 
-    if (savedToken && savedUserId) {
+    if (savedToken && savedUserId && savedUserName) {
       setToken(savedToken);
       setUserId(savedUserId);
-
-      console.log("Data dari localStorage dimuat: ", {
-        savedToken,
-        savedUserId,
-      });
-    } else {
-      console.log("Tidak ada data di localStorage");
+      setUserName(savedUserName);
     }
   }, []);
 
   return (
-    <AuthContext.Provider value={{ token, userId, login, logout }}>
+    <AuthContext.Provider value={{ token, userId, userName, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

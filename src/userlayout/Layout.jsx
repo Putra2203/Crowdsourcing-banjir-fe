@@ -1,8 +1,9 @@
 import React from "react";
-import Sider from "../src/components/Navbar";
-import Footer from "../src/components/Footer";
+import Footer from "../components/Footer";
 import { Outlet } from "react-router-dom";
-import Navbar from "../src/components/Navbar";
+import Navbar from "../components/Navbar";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
 
 const Layout = () => {
   return (
@@ -12,6 +13,7 @@ const Layout = () => {
         <Outlet />
       </main>
       <Footer />
+      <ToastContainer />
     </div>
   );
 };

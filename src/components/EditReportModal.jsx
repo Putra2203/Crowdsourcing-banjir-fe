@@ -7,28 +7,28 @@ const EditReportModal = ({ isOpen, onClose, report, onSave }) => {
   const dispatch = useDispatch();
 
   const [updatedReport, setUpdatedReport] = useState({
-    _id: "", // Menambahkan ID ke dalam state
+    _id: "",
     description: "",
     water_level: "",
     status: "",
     location: "",
-    image: null, // Untuk menangani file gambar
+    image: null,
   });
 
-  const [imagePreview, setImagePreview] = useState(null); // Menambahkan state untuk preview gambar
+  const [imagePreview, setImagePreview] = useState(null);
   const [locationText, setLocationText] = useState("");
 
   useEffect(() => {
     if (report) {
       setUpdatedReport({
-        _id: report._id || "", // Pastikan ID sudah ada
+        _id: report._id || "",
         description: report.description || "",
         water_level: report.water_level || "",
         status: report.status || "",
         location: report.location ? JSON.stringify(report.location) : "",
         image: null,
       });
-      setImagePreview(report.image_url || null); // Menampilkan preview gambar jika ada
+      setImagePreview(report.image_url || null);
     }
   }, [report]);
 
@@ -37,16 +37,15 @@ const EditReportModal = ({ isOpen, onClose, report, onSave }) => {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
-          // Menyimpan lokasi dalam format teks yang user-friendly
           const locationData = {
             type: "Point",
             coordinates: [longitude, latitude], // [longitude, latitude]
           };
           setUpdatedReport((prev) => ({
             ...prev,
-            location: JSON.stringify(locationData), // Menyimpan lokasi dalam format JSON
+            location: JSON.stringify(locationData),
           }));
-          setLocationText(`Latitude: ${latitude}, Longitude: ${longitude}`); // Menampilkan koordinat yang mudah dibaca
+          setLocationText(`Latitude: ${latitude}, Longitude: ${longitude}`);
         },
         (error) => {
           console.error("Error getting location:", error);
@@ -62,7 +61,6 @@ const EditReportModal = ({ isOpen, onClose, report, onSave }) => {
     const { name, value } = e.target;
     setUpdatedReport((prev) => ({ ...prev, [name]: value }));
 
-    // Pastikan lokasi diubah menjadi format JSON string
     if (name === "location") {
       try {
         const parsedLocation = JSON.parse(value);
@@ -83,17 +81,16 @@ const EditReportModal = ({ isOpen, onClose, report, onSave }) => {
     const file = e.target.files[0];
     setUpdatedReport((prev) => ({ ...prev, image: file }));
 
-    // Menampilkan preview gambar
     const reader = new FileReader();
     reader.onloadend = () => {
-      setImagePreview(reader.result); // Menyimpan URL gambar untuk preview
+      setImagePreview(reader.result); 
     };
     if (file) {
       reader.readAsDataURL(file);
     }
   };
 
-  const { token } = useAuth(); // Memastikan useAuth dipanggil dengan benar
+  const { token } = useAuth();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -108,21 +105,18 @@ const EditReportModal = ({ isOpen, onClose, report, onSave }) => {
     formData.append("water_level", updatedReport.water_level);
     formData.append("status", updatedReport.status);
 
-    // Pastikan lokasi sudah diproses dengan benar sebelum dikirim
     if (updatedReport.location) {
-      formData.append("location", updatedReport.location); // Pastikan ini dalam format string JSON
+      formData.append("location", updatedReport.location); 
     }
 
-    // Jika ada file gambar, pastikan itu juga ditambahkan
     if (updatedReport.image) {
       formData.append("image", updatedReport.image);
     }
 
-    // Dispatching update action
     dispatch(updateReport({ reportId: updatedReport._id, formData, token }))
       .then(() => {
-        onSave(updatedReport); // Callback jika berhasil
-        onClose(); // Menutup modal setelah save
+        onSave(updatedReport); 
+        onClose(); 
       })
       .catch((err) => {
         console.error("Failed to update report:", err);

@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 // Base URL backend
 const API_BASE_URL = "https://web-production-6d7c3.up.railway.app/api/reports";
@@ -83,26 +84,14 @@ export const updateReport = createAsyncThunk(
 export const deleteReport = createAsyncThunk(
   "reports/deleteReport",
   async ({ reportId, token }, { rejectWithValue }) => {
-    console.log("ID received in deleteReport thunk:", reportId);
-    console.log("Token received in deleteReport thunk:", token);
-
     try {
-      if (!token) {
-        throw new Error("Authentication token is missing");
-      }
-
       const response = await axios.delete(`${API_BASE_URL}/${reportId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-
       return reportId;
     } catch (err) {
-      console.error(
-        "Error in deleteReport thunk:",
-        err.response?.data || err.message
-      );
       return rejectWithValue(err.response?.data || "Error deleting report");
     }
   }
@@ -116,7 +105,7 @@ const reportsSlice = createSlice({
     loading: false,
     error: null,
   },
-  reducers: {}, // Tidak ada reducers sync
+  reducers: {},
   extraReducers: (builder) => {
     // Fetch Reports
     builder.addCase(fetchReports.pending, (state) => {
@@ -154,10 +143,12 @@ const reportsSlice = createSlice({
     builder.addCase(addReport.fulfilled, (state, action) => {
       state.loading = false;
       state.reports.push(action.payload);
+      toast.success("Report added successfully!");
     });
     builder.addCase(addReport.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload;
+      toast.error("Failed to add report");
     });
 
     // Update Report
@@ -173,10 +164,12 @@ const reportsSlice = createSlice({
       if (index !== -1) {
         state.reports[index] = action.payload;
       }
+      toast.success("Report updated successfully!");
     });
     builder.addCase(updateReport.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload;
+      toast.error("Failed to update report");
     });
 
     // Delete Report
@@ -189,10 +182,12 @@ const reportsSlice = createSlice({
       state.reports = state.reports.filter(
         (report) => report._id !== action.payload
       );
+      toast.success("Report deleted successfully!");
     });
     builder.addCase(deleteReport.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload;
+      toast.error("Failed to delete report");
     });
   },
 });

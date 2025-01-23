@@ -34,7 +34,7 @@ const StatReport = ({ reports }) => {
       })
     )
       .then(() => {
-        console.log("Report updated:", updatedReport);
+        console.log("Report updated");
       })
       .catch((err) => {
         console.error("Error updating report:", err);

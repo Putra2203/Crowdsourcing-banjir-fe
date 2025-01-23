@@ -9,7 +9,7 @@ const DashboardUser = () => {
   const dispatch = useDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { reports, loading, error } = useSelector((state) => state.reports);
-  const { userId, token } = useAuth();
+  const { userId, token, userName } = useAuth();
 
   useEffect(() => {
     if (userId && token) {
@@ -22,9 +22,9 @@ const DashboardUser = () => {
 
   return (
     <div className="flex flex-col w-full h-fit">
-      <div className="flex flex-col w-full p-4 bg-slate-200">
+      <div className="flex flex-col w-full p-4 rounded-lg bg-slate-200">
         <div className="flex items-center justify-between mb-4">
-          <h1 className="text-base font-bold lg:text-2xl">Dashboard User</h1>
+          <h1 className="text-base font-bold lg:text-2xl">Dashboard User <span className="font-normal">| Haiii {userName}</span></h1>
           <button
             className="px-4 py-2 bg-blue-400 rounded-lg"
             onClick={() => setIsModalOpen(true)}

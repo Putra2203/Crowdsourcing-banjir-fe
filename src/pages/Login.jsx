@@ -18,11 +18,7 @@ const Login = () => {
         { email, password }
       );
       const { token, user } = response.data;
-
-      console.log(token, user);
-
-      login(token, user.id);
-
+      login(token, user.id, user.name);
       navigate("/dashboard");
     } catch (err) {
       console.error("Login error:", err.response?.data || err.message);
@@ -31,7 +27,7 @@ const Login = () => {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
-        <div className="flex flex-col items-center justify-center bg-[#94DAFF] lg:w-96 w-72 rounded-lg">
+      <div className="flex flex-col items-center justify-center bg-[#94DAFF] lg:w-96 w-72 rounded-lg">
         <img src={image} alt="" className="object-cover h-20 " />
         <form
           onSubmit={handleLogin}

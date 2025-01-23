@@ -78,11 +78,9 @@ const AddReportModal = ({ isOpen, onClose }) => {
 
     try {
       await dispatch(addReport({ formData, token })).unwrap();
-      alert("Report added successfully!");
       onClose();
     } catch (err) {
       console.error("Failed to add report:", err);
-      alert("Failed to add report. Please try again.");
     }
   };
 
